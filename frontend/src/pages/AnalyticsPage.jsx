@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { analyticsAPI } from '../services/analyticsAPI';
 import Sidebar from '../components/Sidebar';
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const AnalyticsPage = () => {
   const { token } = useAuth();
@@ -13,12 +13,7 @@ const AnalyticsPage = () => {
   const [filter, setFilter] = useState('all'); // all, top, inactive
   const [inactiveDays, setInactiveDays] = useState(60);
 
-  useEffect(() => {
-    fetchAnalytics();
-    fetchSummary();
-  }, []);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -36,26 +31,28 @@ const AnalyticsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter, inactiveDays, token]);
 
-  const fetchSummary = async () => {
+  const fetchSummary = useCallback(async () => {
     try {
       const data = await analyticsAPI.getSummary(token);
       setSummary(data);
     } catch (err) {
       console.error('Error fetching summary:', err);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
+
+  useEffect(() => {
+    fetchSummary();
+  }, [fetchSummary]);
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
   };
-
-  useEffect(() => {
-    if (filter !== 'all') {
-      fetchAnalytics();
-    }
-  }, [filter, inactiveDays]);
 
   // Prepare data for charts
   const topSpenders = analytics.slice(0, 5).map((c) => ({

@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { campaignAnalyticsAPI } from '../services/campaignAnalyticsAPI';
 import { insightsAPI } from '../services/insightsAPI';
 import Sidebar from '../components/Sidebar';
 import {
-  BarChart,
-  Bar,
   LineChart,
   Line,
   PieChart,
@@ -34,11 +32,7 @@ const CampaignAnalyticsDetailPage = () => {
   const [funnel, setFunnel] = useState(null);
   const [generatingInsights, setGeneratingInsights] = useState(false);
 
-  useEffect(() => {
-    fetchMetrics();
-  }, [id]);
-
-  const fetchMetrics = async () => {
+  const fetchMetrics = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -53,7 +47,11 @@ const CampaignAnalyticsDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, token]);
+
+  useEffect(() => {
+    fetchMetrics();
+  }, [fetchMetrics]);
 
   if (loading) {
     return (

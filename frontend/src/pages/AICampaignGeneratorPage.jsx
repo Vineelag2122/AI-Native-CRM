@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { aiCampaignAPI } from '../services/aiCampaignAPI';
 import { segmentAPI } from '../services/segmentAPI';
-import { campaignAPI } from '../services/campaignAPI';
 import Sidebar from '../components/Sidebar';
 
 const AICampaignGeneratorPage = () => {
@@ -17,18 +16,18 @@ const AICampaignGeneratorPage = () => {
   const [messageObjective, setMessageObjective] = useState('');
   const [improvements, setImprovements] = useState(null);
 
-  useEffect(() => {
-    fetchSegments();
-  }, []);
-
-  const fetchSegments = async () => {
+  const fetchSegments = useCallback(async () => {
     try {
       const data = await segmentAPI.getAll(token);
       setSegments(data);
     } catch (err) {
       console.error('Error fetching segments:', err);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchSegments();
+  }, [fetchSegments]);
 
   const handleGenerateSuggestion = async () => {
     setLoading(true);
