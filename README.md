@@ -16,8 +16,14 @@ This is a two-service architecture: **CRM backend** + **Stub Channel Service** w
 ## Live Demo Link
 
 website link : https://ai-native-crm-iybf.vercel.app/login
+
 Backend Link : https://ai-crm-backend-38ha.onrender.com
 
+Please use 
+
+           Email : admin@example.com
+
+           Password : Password123!
 ## Core Modules (13 Must-Have)
 
 ### 1. **Authentication Module**
