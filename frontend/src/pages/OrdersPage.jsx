@@ -27,11 +27,6 @@ const OrdersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  useEffect(() => {
-    fetchOrders();
-    fetchCustomers();
-  }, [fetchOrders, fetchCustomers]);
-
   // Map customer ID to customer details
   const customerMap = React.useMemo(() => {
     const map = {};
@@ -111,6 +106,11 @@ const OrdersPage = () => {
       console.error('Error fetching customers:', err);
     }
   }, [token]);
+
+  useEffect(() => {
+    fetchOrders();
+    fetchCustomers();
+  }, [fetchOrders, fetchCustomers]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

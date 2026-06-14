@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { campaignAPI } from '../services/campaignAPI';
@@ -29,13 +29,7 @@ const CampaignsPage = () => {
     message_template_id: '',
   });
 
-  useEffect(() => {
-    fetchCampaigns();
-    fetchSegments();
-    fetchTemplates();
-  }, []);
-
-  const fetchCampaigns = async () => {
+  const fetchCampaigns = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -46,25 +40,31 @@ const CampaignsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
-  const fetchSegments = async () => {
+  const fetchSegments = useCallback(async () => {
     try {
       const data = await segmentAPI.getAll(token);
       setSegments(data);
     } catch (err) {
       console.error('Error fetching segments:', err);
     }
-  };
+  }, [token]);
 
-  const fetchTemplates = async () => {
+  const fetchTemplates = useCallback(async () => {
     try {
       const data = await templateAPI.getAll(token);
       setTemplates(data);
     } catch (err) {
       console.error('Error fetching templates:', err);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchCampaigns();
+    fetchSegments();
+    fetchTemplates();
+  }, [fetchCampaigns, fetchSegments, fetchTemplates]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

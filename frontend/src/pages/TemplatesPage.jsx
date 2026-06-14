@@ -34,10 +34,6 @@ const TemplatesPage = () => {
     template_text: '',
   });
 
-  useEffect(() => {
-    fetchTemplates();
-  }, [fetchTemplates]);
-
   const fetchTemplates = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -50,6 +46,10 @@ const TemplatesPage = () => {
       setLoading(false);
     }
   }, [token]);
+
+  useEffect(() => {
+    fetchTemplates();
+  }, [fetchTemplates]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

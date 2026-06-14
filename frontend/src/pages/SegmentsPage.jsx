@@ -22,6 +22,19 @@ const SegmentsPage = () => {
   const [viewingSegment, setViewingSegment] = useState(null);
   const [viewingSegmentLoading, setViewingSegmentLoading] = useState(false);
 
+  const fetchSegments = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await segmentAPI.getAll(token);
+      setSegments(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
+
   useEffect(() => {
     fetchSegments();
   }, [fetchSegments]);
@@ -38,19 +51,6 @@ const SegmentsPage = () => {
       setViewingSegmentLoading(false);
     }
   };
-
-  const fetchSegments = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await segmentAPI.getAll(token);
-      setSegments(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
