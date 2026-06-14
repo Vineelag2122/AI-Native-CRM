@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global design tokens */
+:root {
+  --bg:#071023;
+  --panel:#0f1724;
+  --muted:#9aa4b2;
+  --accent1:#7c5cff;
+  --accent2:#00d4ff;
+}
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-[#071023] text-gray-100 antialiased;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  }
+  h1, h2, h3 { color: #e6eef8; }
+  a { @apply text-[var(--accent1)]; }
+}
+
+@layer components {
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+    @apply rounded-xl p-6 shadow-lg;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold;
+    background: linear-gradient(90deg,var(--accent1),var(--accent2));
+    box-shadow: 0 6px 18px rgba(124,92,255,0.12);
+  }
+  .sidebar {
+    background: linear-gradient(180deg,#071023 0%, #061126 100%);
+    border-right: 1px solid rgba(255,255,255,0.03);
+    @apply w-72 min-h-screen p-6 text-white;
+  }
+  .nav-item { @apply w-full text-left px-4 py-3 rounded-lg transition; }
+  .nav-item:hover { background: rgba(255,255,255,0.02); }
+  .nav-item.active { background: rgba(124,92,255,0.12); }
+}
+
+/* small utility tweaks */
+.text-muted { color: var(--muted); }
+.bg-panel { background: var(--panel); }
+
+/* responsive container used across pages */
+.app-container { max-width: 1200px; margin: 0 auto; padding: 24px; }
