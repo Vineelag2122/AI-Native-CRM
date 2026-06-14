@@ -1,12 +1,9 @@
-// backend/db-init.js
-// Reads database_schema.sql and runs it against the database URL
-// Usage: node db-init.js
-
 import fs from 'fs';
 import path from 'path';
 import pg from 'pg';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 dotenv.config();
 
@@ -34,7 +31,7 @@ async function main() {
     `);
     
     if (checkResult.rows[0].exists) {
-      console.log('✅ Database schema already exists. Skipping initialization.');
+      console.log('✅ Database schema already exists. Skipping initialization and seeding.');
       return;
     }
 
@@ -44,6 +41,14 @@ async function main() {
     console.log('Initializing database schema...');
     await pool.query(sql);
     console.log('✅ Database schema initialized successfully!');
+
+    console.log('Seeding database with mock data...');
+    try {
+      execSync('node seed.js', { stdio: 'inherit', env: { ...process.env } });
+      console.log('✅ Seeding completed successfully!');
+    } catch (seedError) {
+      console.error('❌ Database seeding failed:', seedError.message);
+    }
   } catch (error) {
     console.error('❌ Failed to initialize database schema:', error);
   } finally {
