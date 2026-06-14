@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { segmentAPI } from '../services/segmentAPI';
 import Sidebar from '../components/Sidebar';
@@ -24,7 +24,7 @@ const SegmentsPage = () => {
 
   useEffect(() => {
     fetchSegments();
-  }, []);
+  }, [fetchSegments]);
 
   const handleViewSegment = async (id) => {
     setViewingSegmentLoading(true);
@@ -39,7 +39,7 @@ const SegmentsPage = () => {
     }
   };
 
-  const fetchSegments = async () => {
+  const fetchSegments = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -50,7 +50,7 @@ const SegmentsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

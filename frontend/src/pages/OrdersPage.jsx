@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { orderAPI } from '../services/orderAPI';
 import { customerAPI } from '../services/customerAPI';
@@ -30,7 +30,7 @@ const OrdersPage = () => {
   useEffect(() => {
     fetchOrders();
     fetchCustomers();
-  }, []);
+  }, [fetchOrders, fetchCustomers]);
 
   // Map customer ID to customer details
   const customerMap = React.useMemo(() => {
@@ -90,7 +90,7 @@ const OrdersPage = () => {
   const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -101,16 +101,16 @@ const OrdersPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = useCallback(async () => {
     try {
       const data = await customerAPI.getAll(token);
       setCustomers(data);
     } catch (err) {
       console.error('Error fetching customers:', err);
     }
-  };
+  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

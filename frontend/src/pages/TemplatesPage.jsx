@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { templateAPI } from '../services/templateAPI';
 import Sidebar from '../components/Sidebar';
@@ -36,9 +36,9 @@ const TemplatesPage = () => {
 
   useEffect(() => {
     fetchTemplates();
-  }, []);
+  }, [fetchTemplates]);
 
-  const fetchTemplates = async () => {
+  const fetchTemplates = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -49,7 +49,7 @@ const TemplatesPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

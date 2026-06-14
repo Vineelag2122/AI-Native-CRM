@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { insightsAPI } from '../services/insightsAPI';
 import Sidebar from '../components/Sidebar';
@@ -8,14 +8,8 @@ const InsightsPage = () => {
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [generating, setGenerating] = useState(false);
-  const [generatingId, setGeneratingId] = useState(null);
 
-  useEffect(() => {
-    fetchInsights();
-  }, []);
-
-  const fetchInsights = async () => {
+  const fetchInsights = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -26,24 +20,11 @@ const InsightsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
-  const handleGenerateInsights = async (campaignId) => {
-    setGenerating(true);
-    setGeneratingId(campaignId);
-    setError(null);
-
-    try {
-      await insightsAPI.generate(campaignId, token);
-      alert('✅ Insights generated successfully!');
-      fetchInsights();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setGenerating(false);
-      setGeneratingId(null);
-    }
-  };
+  useEffect(() => {
+    fetchInsights();
+  }, [fetchInsights]);
 
   const handleDeleteInsight = async (id) => {
     if (!window.confirm('Delete this insight?')) return;
