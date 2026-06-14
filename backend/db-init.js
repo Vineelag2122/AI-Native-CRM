@@ -23,6 +23,21 @@ const pool = new pg.Pool({
 async function main() {
   try {
     console.log('Connecting to PostgreSQL database...');
+    
+    // Check if users table already exists to prevent duplicate execution errors
+    const checkResult = await pool.query(`
+      SELECT EXISTS (
+        SELECT FROM pg_tables 
+        WHERE schemaname = 'public' 
+        AND tablename  = 'users'
+      );
+    `);
+    
+    if (checkResult.rows[0].exists) {
+      console.log('✅ Database schema already exists. Skipping initialization.');
+      return;
+    }
+
     const schemaPath = path.join(__dirname, 'database_schema.sql');
     const sql = fs.readFileSync(schemaPath, 'utf8');
     
