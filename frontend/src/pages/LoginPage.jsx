@@ -35,6 +35,18 @@ const LoginPage = () => {
       <div className="w-full max-w-md bg-gray-800 rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold text-white mb-6 text-center">AI-CRM Login</h1>
 
+        <div className="mb-6 bg-blue-950/40 border border-blue-800/60 rounded-lg p-4 text-sm shadow-inner">
+          <p className="text-blue-200 font-semibold mb-2 flex items-center gap-1.5">
+            🔑 Demo Credentials:
+          </p>
+          <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-gray-300 font-mono">
+            <span className="text-gray-500 font-sans">Email:</span>
+            <span className="text-blue-300">admin@example.com</span>
+            <span className="text-gray-500 font-sans">Password:</span>
+            <span className="text-blue-300">Password123!</span>
+          </div>
+        </div>
+
         {(error || localError) && (
           <div className="mb-4 p-3 bg-red-900 text-red-100 rounded">
             {error || localError}
