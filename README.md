@@ -171,26 +171,3 @@ npm install
 npm run dev
 ```
 
----
-
-## Evaluation Criteria
-
-1. ✅ **Live, deployed product** (baseline)
-2. 🎯 **Bold scoping choices** (not everything shallow)
-3. 🤖 **AI-native workflow** (AI assists at key steps)
-4. 🧹 **Code quality** (clean, readable, well-organized)
-5. 🏗️ **System design** (handles volume, retries, failures)
-6. 💬 **Clear communication** (think out loud, explain choices)
-
----
-
-## What This Is / Isn't
-
-✅ **IS:** A CRM for reaching shoppers (marketing/engagement tool like Xeno)
-❌ **ISN'T:** A sales/support CRM (no pipelines, deals, tickets)
-
----
-
-## Next Steps
-
-Starting with **Module 1: Database Schema & Auth**. You'll see a working feature at each step.
